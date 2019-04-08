@@ -10,6 +10,7 @@ namespace App\Providers;
 
 
 use App\Models\DynamoDbUser;
+use App\Exceptions\Handler;
 use Illuminate\Contracts\Auth\UserProvider;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Support\Facades\Hash;
@@ -18,13 +19,14 @@ use Illuminate\Support\Facades\Log;
 class DynamoDbProvider implements UserProvider
 {
     public function retrieveById($identifier) {
-        return DynamoDbUser::find($identifier);
+        return DynamoDbUser::where('email', $identifier)
+            ->first();
     }
 
 
     public function retrieveByToken($identifier, $token) {
-        return DynamoDbUser::where('id', $identifier)
-            ->where('rememberToken', $token)
+        return DynamoDbUser::where('email', $identifier)
+            ->where('token', $token)
             ->first();
     }
 
@@ -37,7 +39,7 @@ class DynamoDbProvider implements UserProvider
 
     public function retrieveByCredentials(array $credentials) {
         $username = $credentials['username'];
-        $user = DynamoDbUser::where('username', $username)->first();
+        $user = DynamoDbUser::where('email', $username)->first();
         return $user;
 
     }
@@ -45,7 +47,7 @@ class DynamoDbProvider implements UserProvider
 
     public function validateCredentials(Authenticatable $user, array $credentials) {
         $password = $credentials['password'];
-        $password = hash('sha256', $password);
+        //$password = hash('sha256', $password);
 
         return $user->password == $password;
     }

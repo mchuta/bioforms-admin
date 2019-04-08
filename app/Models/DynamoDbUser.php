@@ -16,10 +16,8 @@ class DynamoDbUser extends DynamoDbModel implements Authenticatable
 {
     use SoftDeletes;
 
-    protected $table = 'users';
+    protected $table = 'Datachase';
     protected $guarded = [];
-    protected $dates = ['deleted_at'];
-
 
 
 
@@ -30,7 +28,7 @@ class DynamoDbUser extends DynamoDbModel implements Authenticatable
 
     public function getAuthIdentifier()
     {
-        return $this->id;
+        return $this->email;
     }
 
     public function getAuthPassword()
@@ -50,8 +48,9 @@ class DynamoDbUser extends DynamoDbModel implements Authenticatable
 
     public function getRememberTokenName()
     {
-        return 'token';
+        return 'remember_token';
         // TODO: Implement getRememberTokenName() method.
     }
+
 
 }

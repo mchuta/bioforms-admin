@@ -18,3 +18,7 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+Route::get('/form/{id}','FormController@index')->name('form');
+Route::get('/form/{id}/data','FormController@data')->name('formdata');
+Route::get('/form/{id}/edit','FormController@edit')->name('formeidt');

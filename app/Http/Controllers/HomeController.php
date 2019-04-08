@@ -23,6 +23,15 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        //abort(403, auth()->user());
+
+        
+        $forms = [];
+
+        if (auth()->user()->forms) {
+            $forms = auth()->user()->forms;
+        }
+        return view('home', ['forms' => $forms]);
     }
+
 }
